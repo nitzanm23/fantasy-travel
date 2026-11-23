@@ -1,0 +1,7 @@
+/**
+ * Self-hosted fonts from @fontsource 5.3.0 (Latin subset).
+ * Poppins: SIL OFL 1.1. Roboto Slab: Apache 2.0. License files are in this folder.
+ */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:300;font-display:swap;src:url(./poppins-latin-300-normal.woff2) format('woff2');}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url(./poppins-latin-400-normal.woff2) format('woff2');}
+@font-face{font-family:'Roboto Slab';font-style:normal;font-weight:300;font-display:swap;src:url(./roboto-slab-latin-300-normal.woff2) format('woff2');}

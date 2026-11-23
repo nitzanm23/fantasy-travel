@@ -1,0 +1,83 @@
+# CI/CD for Fantasy Travel
+#
+# On every push to main:  validate  ->  deploy to GitHub Pages (only if validation passed)
+# On every pull request:  validate only (nothing is published)
+#
+# One-time setup in the repository: Settings -> Pages -> Source: "GitHub Actions".
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # adds a "Run workflow" button in the Actions tab
+
+# If a newer push arrives while a run is still going, cancel the older run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate HTML & Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # Checks index.html against the HTML standard and common accessibility rules.
+      # Two purely stylistic rules (doctype casing, self-closing tags) are turned off
+      # in .github/htmlvalidate.json to match the Prettier formatting used here.
+      - name: Validate HTML
+        run: npx --yes html-validate@11.21.1 --config .github/htmlvalidate.json index.html
+
+      # Serves the folder locally and runs Lighthouse 3 times (Chrome is preinstalled
+      # on GitHub's Ubuntu runners). The build fails if Accessibility, Best Practices
+      # or SEO drop below 95. Performance is a warning only, because the 3-second
+      # opening screen lowers it by design. The report link appears in the step log.
+      - name: Run Lighthouse CI
+        run: npx --yes @lhci/cli@0.16.1 autorun --config=.github/lighthouserc.json
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: validate # runs only if every validate step passed
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write # publish to GitHub Pages
+      id-token: write # prove to Pages that this run comes from this repository
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+
+      # Publish only what the browser needs: not README, docs/, or .github/.
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp -r index.html assets scripts styles vendor _site/
+          touch _site/.nojekyll
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

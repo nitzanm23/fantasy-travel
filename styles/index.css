@@ -1,0 +1,868 @@
+/**
+ * Fantasy Travel: main stylesheet.
+ *
+ * Components in page order, then responsive overrides, then progressive-enhancement
+ * fallbacks. Uses the custom properties from tokens.css; class names follow BEM.
+ */
+
+/* ========== UTILITIES ========== */
+.u-shadow-black {
+  filter: var(--drop-shadow-black);
+}
+
+/* ========== GLOBAL ========== */
+html {
+  /* Anchor targets land below the fixed navbar instead of under it. */
+  scroll-padding-top: 100px;
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  overflow-x: hidden;
+}
+
+/* ========== NAVBAR ========== */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-navbar);
+}
+
+.navbar {
+  position: relative;
+  width: 100%;
+  height: var(--navbar-height);
+  padding: clamp(15px, 2vw, 20px) var(--section-padding-x);
+  transition: background var(--transition-base);
+}
+
+.navbar.is-scrolled {
+  background: var(--color-background);
+}
+
+.navbar__mobile-logo-link {
+  display: none;
+}
+
+/* CSS sets the height; the HTML width/height attributes only reserve space (no layout shift). */
+.navbar__logo,
+.navbar__mobile-logo {
+  width: auto;
+}
+
+.navbar__list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(5px, 2vw, 20px);
+}
+
+.navbar__logo {
+  height: clamp(35px, 5vw, 50px);
+  filter: invert(100%);
+}
+
+.navbar__item {
+  margin: 0;
+  transition: transform var(--transition-base);
+}
+
+.navbar__item:hover {
+  transform: scale(1.2);
+}
+
+.navbar__link {
+  display: inline-block;
+  padding: clamp(10px, 2vw, 20px);
+  font-size: clamp(14px, 1.5vw, 16px);
+  color: var(--color-text);
+}
+
+.navbar__toggle {
+  display: none;
+}
+
+/* ========== SKIP LINK ========== */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: var(--z-skip-link);
+  padding: 12px;
+  background: var(--color-background-dark);
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* ========== HERO SECTION ========== */
+.hero-section {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  min-height: 100dvh;
+  color: var(--color-text);
+}
+
+/* Rendered with `hidden`: app.js reveals it, so a page without JavaScript never shows it. */
+.hero-section__pause {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--color-background);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.hero-section__pause[hidden] {
+  display: none;
+}
+
+.hero-section__content {
+  padding-inline: 1rem;
+}
+
+.hero-section__title {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-light);
+  font-size: clamp(40px, 8vw, 80px);
+  line-height: 1.2;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.hero-section__sub-heading {
+  margin: clamp(15px, 2vw, 20px) 0;
+  font-size: clamp(16px, 2vw, 20px);
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.hero-section__scroll-link {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: down ease 1s infinite;
+}
+
+.hero-section__scroll-icon {
+  width: clamp(15px, 2vw, 20px);
+}
+
+@keyframes down {
+  from {
+    bottom: 10%;
+  }
+
+  to {
+    bottom: 8%;
+  }
+}
+
+.hero-section__background {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-background);
+}
+
+.hero-section__background-image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-section__background::before,
+.hero-section__background::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+}
+
+.hero-section__background::before {
+  top: 0;
+  background: var(--gradient-top);
+}
+
+.hero-section__background::after {
+  bottom: 0;
+  background: var(--gradient-bottom);
+}
+
+.hero-section__grid-slider {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: 100%;
+  height: 100%;
+}
+
+.hero-section__grid-item {
+  width: 100%;
+  height: 100%;
+  background: var(--color-background-dark);
+  opacity: 1;
+  transition: opacity var(--transition-base);
+}
+
+.hero-section__grid-item.is-hidden {
+  opacity: 0;
+}
+
+/* ========== SHARED SECTION ========== */
+.explore-section,
+.services-section {
+  position: relative;
+  width: 100%;
+  padding: var(--section-padding-y) var(--section-padding-x);
+  color: var(--color-text);
+}
+
+.section-title {
+  font-size: clamp(35px, 4vw, 50px);
+  font-weight: var(--font-weight-regular);
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.section-description {
+  display: block;
+  width: 50%;
+  min-width: clamp(250px, 80%, 300px);
+  margin: clamp(20px, 3vw, 30px) auto;
+  font-size: clamp(14px, 1.5vw, 16px);
+  line-height: clamp(22px, 2.5vw, 25px);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* ========== TOURS ========== */
+.tours {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: clamp(15px, 2vw, 20px);
+  width: 100%;
+  height: clamp(400px, 60vw, 600px);
+  margin-top: clamp(60px, 10vw, 100px);
+}
+
+.tours__card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: end;
+  width: 100%;
+  height: 100%;
+  padding: clamp(8px, 1vw, 10px);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.tours__card--tall {
+  grid-row: span 2;
+}
+
+.tours__card--wide {
+  grid-column: span 2;
+}
+
+.tours__image {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-base);
+}
+
+/* Bottom scrim keeps the card label readable on bright photos. */
+.tours__card::after {
+  content: "";
+  position: absolute;
+  inset: 45% 0 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
+  pointer-events: none;
+}
+
+.tours__body {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.tours__card:hover .tours__image {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+
+.tours__name {
+  font-weight: var(--font-weight-light);
+  font-size: clamp(16px, 2vw, 18px);
+}
+
+.tours__action {
+  position: relative;
+  margin-left: clamp(15px, 2vw, 20px);
+  font-size: clamp(12px, 1.5vw, 14px);
+}
+
+.tours__action::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 2px;
+  width: 15px;
+  height: 15px;
+  background: url("../assets/images/pin.webp") center / contain no-repeat;
+}
+
+/* ========== SERVICES ========== */
+.services-section {
+  overflow: hidden;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(15px, 2vw, 20px);
+  width: 100%;
+}
+
+.services__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(15px, 2vw, 20px);
+  width: 100%;
+  height: clamp(200px, 25vw, 250px);
+  margin-top: clamp(60px, 10vw, 100px);
+  padding: clamp(8px, 1vw, 10px);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-background);
+}
+
+.services__icon {
+  z-index: 1;
+  width: clamp(45px, 6vw, 60px);
+  height: clamp(45px, 6vw, 60px);
+  fill: currentColor;
+}
+
+.footer__icon {
+  display: inline-block;
+  width: 1.15em;
+  height: 1em;
+  vertical-align: -0.125em;
+  fill: currentColor;
+}
+
+.u-visually-hidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.services__text {
+  z-index: 1;
+  padding: 0 clamp(15px, 2vw, 20px);
+  font-size: clamp(14px, 1.5vw, 16px);
+  text-align: center;
+}
+
+.services__circle {
+  position: absolute;
+  top: 1%;
+  left: 1%;
+  width: 100%;
+  height: 100%;
+  clip-path: circle(1% at 100% 100%);
+  background-position: center;
+  background-size: cover;
+  transition: clip-path var(--transition-base);
+}
+
+.services__circle--world {
+  background-image: url("../assets/images/img5.webp");
+}
+
+.services__circle--coins {
+  background-image: url("../assets/images/img2.webp");
+}
+
+.services__circle--culture {
+  background-image: url("../assets/images/img6.webp");
+}
+
+.services__circle--adventure {
+  background-image: url("../assets/images/img4.webp");
+}
+
+.services__card:hover .services__circle {
+  clip-path: circle(141.4% at 100% 100%);
+}
+
+.services-section__bg-circle {
+  position: absolute;
+  right: 0;
+  z-index: -1;
+  width: clamp(300px, 50vw, 500px);
+  height: clamp(300px, 50vw, 500px);
+  border-radius: 50%;
+  background: var(--gradient-sphere-one);
+  transform: translateX(40%) translateY(10%);
+  pointer-events: none;
+}
+
+/* ========== TRAVEL GALLERY ========== */
+.travel-grid {
+  width: 100%;
+  columns: 3;
+  column-gap: clamp(15px, 2vw, 20px);
+  margin-top: clamp(120px, 20vw, 200px);
+}
+
+.travel-grid__item {
+  display: block;
+  margin: 0 0 clamp(15px, 2vw, 20px);
+  break-inside: avoid;
+}
+
+.travel-grid__item img {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+/* ========== BOOK SECTION ========== */
+.book-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3vw, 30px);
+  width: 100%;
+  height: 100vh;
+  min-height: 100dvh;
+  padding: 0 var(--section-padding-x);
+  overflow: hidden;
+}
+
+.book-section__image {
+  position: absolute;
+  right: 0;
+  width: 50%;
+}
+
+.book-section__content {
+  width: 50%;
+  color: var(--color-text);
+}
+
+.book-section__title {
+  width: clamp(250px, 80%, 300px);
+  font-size: clamp(35px, 5vw, 50px);
+  font-weight: var(--font-weight-light);
+  line-height: 1.2;
+}
+
+.book-section__text {
+  width: clamp(250px, 80%, 300px);
+  margin: clamp(20px, 3vw, 30px) 0;
+  font-size: clamp(14px, 1.5vw, 16px);
+  line-height: clamp(22px, 2.5vw, 25px);
+  color: var(--color-text-muted);
+}
+
+.book-section__demo-note {
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.book-section__button {
+  position: relative;
+  display: inline-block;
+  padding: clamp(8px, 1vw, 10px) clamp(15px, 2vw, 20px);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background: var(--color-background-dark);
+  color: var(--color-text);
+  font-size: clamp(16px, 2vw, 18px);
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.book-section__button::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -30px;
+  width: 20px;
+  height: 120%;
+  background: var(--color-text);
+  opacity: 0.2;
+  transform: rotate(5deg);
+  transition: left var(--transition-base);
+}
+
+.book-section__button:hover::before {
+  left: 100%;
+}
+
+.book-section__bg-circle {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  width: clamp(150px, 25vw, 250px);
+  height: clamp(150px, 25vw, 250px);
+  border-radius: 50%;
+  background: var(--gradient-sphere-two);
+  transform: translateX(-40%) translateY(40%);
+  pointer-events: none;
+}
+
+/* ========== FOOTER ========== */
+.footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 30px);
+  width: 100%;
+  padding: clamp(60px, 10vw, 100px) var(--section-padding-x);
+  background: var(--color-background-dark);
+}
+
+.footer__logo {
+  width: clamp(150px, 25vw, 250px);
+  opacity: 0.7;
+  filter: invert(100%);
+}
+
+.footer__content {
+  font-style: normal;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.footer__content p {
+  margin: clamp(15px, 2vw, 20px) 0;
+}
+
+.footer__content a {
+  transition: opacity var(--transition-fast);
+}
+
+.footer__content a:hover {
+  opacity: 0.8;
+}
+
+.footer__copyright {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: clamp(8px, 1vw, 10px) 0;
+  background: var(--color-background-dark);
+  color: var(--color-text);
+  font-size: clamp(12px, 1.5vw, 14px);
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.footer__copyright a:hover {
+  color: var(--color-focus);
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media screen and (max-width: 996px) {
+  .tours {
+    height: clamp(600px, 90vw, 900px);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+
+  .tours__card--wide {
+    grid-column: span 1;
+  }
+
+  .tours__card--tablet-tall {
+    grid-row: span 2;
+  }
+
+  .services {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .services__card:nth-child(3),
+  .services__card:nth-child(4) {
+    margin-top: 0;
+  }
+
+  .travel-grid {
+    columns: 2;
+  }
+
+  .book-section__image {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 798px) {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    min-height: 80px;
+    padding: clamp(12px, 2vw, 15px) var(--section-padding-x);
+    background: var(--color-background);
+  }
+
+  .navbar__mobile-logo-link {
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .navbar__mobile-logo {
+    height: clamp(35px, 8vw, 50px);
+    filter: invert(100%);
+  }
+
+  .navbar__toggle {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  .navbar__toggle-line {
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    border-radius: var(--radius-full);
+    background: currentColor;
+    transition:
+      transform var(--transition-base),
+      opacity var(--transition-base);
+  }
+
+  .navbar__toggle-line:nth-child(1) {
+    transform: translateY(-7px);
+  }
+
+  .navbar__toggle-line:nth-child(3) {
+    transform: translateY(7px);
+  }
+
+  .navbar.is-open .navbar__toggle-line:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  .navbar.is-open .navbar__toggle-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar.is-open .navbar__toggle-line:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  .navbar__list {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-background);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition:
+      opacity var(--transition-base),
+      visibility var(--transition-base),
+      transform var(--transition-base);
+  }
+
+  .navbar.is-open .navbar__list {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .navbar__item--logo {
+    display: none;
+  }
+
+  .navbar__item:hover {
+    transform: scale(1.08);
+  }
+
+  .navbar__link {
+    padding: 10px;
+    font-size: clamp(24px, 8vw, 42px);
+  }
+
+  .hero-section__grid-slider {
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .section-description {
+    width: 100%;
+  }
+
+  .tours {
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 15px;
+  }
+
+  .tours__card {
+    min-height: 250px;
+  }
+
+  .tours__card--tall,
+  .tours__card--wide,
+  .tours__card--tablet-tall {
+    grid-column: span 1;
+    grid-row: auto;
+  }
+
+  .services {
+    grid-template-columns: 1fr;
+  }
+
+  .services__card:nth-child(2) {
+    margin-top: 0;
+  }
+
+  .travel-grid {
+    columns: 1;
+  }
+
+  .book-section {
+    height: auto;
+    padding: clamp(28vw, 30vw, 35vw) var(--section-padding-x);
+  }
+
+  .book-section__bg-circle {
+    z-index: 1;
+  }
+
+  .book-section__image {
+    width: 100%;
+    opacity: 0.3 !important;
+  }
+
+  .book-section__content {
+    z-index: 2;
+    width: 100%;
+    text-align: center;
+  }
+
+  .book-section__title,
+  .book-section__text {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .footer__content {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navbar {
+    padding: 10px 5vw;
+  }
+
+  .tours__card {
+    min-height: 200px;
+  }
+
+  .book-section {
+    height: auto;
+    padding: clamp(15vw, 20vw, 35vw) var(--section-padding-x);
+  }
+}
+
+/* ========== PROGRESSIVE ENHANCEMENT ========== */
+/* These fallbacks stay last so they override the enhanced styles above. */
+
+/* AOS is optional: its CSS must not hide content when its script fails to load. */
+html:not(.aos-enabled) [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Without JavaScript the menu toggle cannot work, so show the links as a plain row. */
+@media (max-width: 798px) {
+  html:not(.has-js) .navbar {
+    flex-wrap: wrap;
+  }
+
+  html:not(.has-js) .navbar__list {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  html:not(.has-js) .navbar__link {
+    font-size: 14px;
+  }
+
+  html:not(.has-js) .navbar__toggle {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

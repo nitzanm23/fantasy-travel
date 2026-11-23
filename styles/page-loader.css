@@ -1,0 +1,99 @@
+/**
+ * Fantasy Travel: opening screen (page loader).
+ *
+ * scripts/page-loader.js adds `.is-loading` to <html> before first paint and removes it
+ * after 3 seconds. Every rule here is scoped to that class, so with JavaScript disabled
+ * the loader never appears and the page is visible immediately.
+ */
+
+/* ========== LOADER ========== */
+.page-loader {
+  display: none;
+}
+
+html.is-loading .page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-loader-background);
+  animation: loader-failsafe 4s step-end forwards;
+}
+
+.page-loader__logo {
+  width: clamp(150px, 50%, 300px);
+  height: auto;
+  animation: elastic-bounce var(--transition-elastic);
+}
+
+/* ========== HIDDEN CONTENT ========== */
+html.is-loading .site-header,
+html.is-loading .app-root,
+html.is-loading .footer,
+html.is-loading .skip-link {
+  visibility: hidden;
+  animation: content-failsafe 4s step-end forwards;
+}
+
+html.is-loading body {
+  overflow-y: hidden;
+  animation: scroll-failsafe 4s step-end forwards;
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes elastic-bounce {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/*
+ * Failsafes: if a script error stops page-loader.js from removing `.is-loading`,
+ * these keyframes still hide the loader and reveal the page after 4 seconds.
+ */
+@keyframes loader-failsafe {
+  to {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@keyframes content-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes scroll-failsafe {
+  to {
+    overflow-y: auto;
+  }
+}
+
+/* ========== REDUCED MOTION ========== */
+@media (prefers-reduced-motion: reduce) {
+  .page-loader__logo {
+    animation: none;
+  }
+
+  /*
+   * reset.css shortens every animation to 0.01ms for reduced motion, which would fire
+   * the failsafes instantly. Restore their 4-second timing; they are timers, not motion.
+   */
+  html.is-loading .page-loader,
+  html.is-loading .site-header,
+  html.is-loading .app-root,
+  html.is-loading .footer,
+  html.is-loading .skip-link,
+  html.is-loading body {
+    animation-duration: 4s !important;
+  }
+}
