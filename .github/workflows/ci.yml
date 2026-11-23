@@ -41,10 +41,10 @@ jobs:
       - name: Validate HTML
         run: npx --yes html-validate@11.21.1 --config .github/htmlvalidate.json index.html
 
-      # Serves the folder locally and runs Lighthouse 3 times (Chrome is preinstalled
-      # on GitHub's Ubuntu runners). The build fails if Accessibility, Best Practices
-      # or SEO drop below 95. Performance is a warning only, because the 3-second
-      # opening screen lowers it by design. The report link appears in the step log.
+      # Serves the folder locally and runs Lighthouse 3 times (Chrome is preinstalled on GitHub's
+      # Ubuntu runners). The build fails if Accessibility, Best Practices or SEO drop below 95.
+      # Performance is a warning only, because the 3-second opening screen lowers it by design. The
+      # report link appears in the step log.
       - name: Run Lighthouse CI
         run: npx --yes @lhci/cli@0.16.1 autorun --config=.github/lighthouserc.json
 
@@ -67,7 +67,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir _site
-          cp -r index.html assets scripts styles vendor _site/
+          cp -r index.html manifest.webmanifest assets scripts styles vendor _site/
           touch _site/.nojekyll
 
       - name: Configure GitHub Pages

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-  <img src="./assets/logo/logo.svg" alt="Fantasy Travel logo" width="180" />
+  <img src="./assets/logos/logo.svg" alt="Fantasy Travel logo" width="180" />
 
   <h1>✈️ Fantasy Travel</h1>
 
@@ -77,10 +77,15 @@ The visual base follows the Modern Web tutorial credited below. I extended it wi
 ```text
 fantasy-travel/
 ├── index.html
+├── manifest.webmanifest  # home screen name, colors, and icons
 ├── assets/
-│   ├── icons/            # favicon
-│   ├── images/           # photos, UI graphics, social preview image
-│   └── logo/
+│   ├── icons/            # favicon, home screen icons, UI icons
+│   ├── images/
+│   │   ├── destinations/ # destination photos
+│   │   ├── gallery/      # slideshow and gallery photos
+│   │   ├── book.webp     # booking illustration
+│   │   └── og-image.jpg  # social preview image
+│   └── logos/
 ├── styles/
 │   ├── tokens.css        # design tokens (colors, spacing, motion, layers)
 │   ├── reset.css         # browser defaults, focus ring, reduced motion

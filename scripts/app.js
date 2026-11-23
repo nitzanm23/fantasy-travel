@@ -31,12 +31,12 @@
   // --- Configuration ---
   const CONFIG = Object.freeze({
     SLIDER_IMAGES: Object.freeze([
-      "img1.webp",
-      "img2.webp",
-      "img3.webp",
-      "img4.webp",
-      "img5.webp",
-      "img6.webp",
+      "gallery/rooftop-view.webp",
+      "gallery/lake-island.webp",
+      "gallery/santorini-coast.webp",
+      "gallery/old-town-street.webp",
+      "gallery/overwater-villa.webp",
+      "gallery/beach-dinner.webp",
     ]),
     SLIDER_INTERVAL_MS: 5000,
     NAVBAR_SCROLL_THRESHOLD: 188,
@@ -52,7 +52,7 @@
     navbar: document.querySelector(".navbar"),
     navbarToggle: document.querySelector(".navbar__toggle"),
     navbarLinks: [...document.querySelectorAll(".navbar__link")],
-    copyrightLine: document.querySelector(".footer__copyright"),
+    footerYear: document.querySelector(".footer__year"),
     inertRegions: [...document.querySelectorAll(".skip-link, main, .footer")],
   });
 
@@ -67,7 +67,6 @@
   };
 
   // --- Hero Slider ---
-
   /**
    * Stops any wipe in progress and resets the grid panels to hidden.
    */
@@ -160,7 +159,6 @@
   }
 
   // --- Navbar ---
-
   /**
    * While the mobile menu is open, removes everything outside the header from the tab
    * order, including the skip link, whose target would otherwise be inert.
@@ -227,16 +225,11 @@
 
   // --- Footer ---
   function renderFooterYear() {
-    if (!dom.copyrightLine) return;
-
-    const currentYear = new Date().getFullYear();
-    const portfolioUrl = "https://nm-dev.com";
-
-    dom.copyrightLine.innerHTML = `&copy; ${currentYear} Fantasy Travel. Built by <a href="${portfolioUrl}" target="_blank" rel="noopener noreferrer"><svg class="footer__icon" aria-hidden="true" focusable="false"><use href="#icon-code" /></svg> NM Dev.</a>`;
+    if (dom.footerYear)
+      dom.footerYear.textContent = String(new Date().getFullYear());
   }
 
   // --- AOS ---
-
   /**
    * Lazy images change the page height after AOS measured it, so recompute its offsets
    * whenever one finishes loading.

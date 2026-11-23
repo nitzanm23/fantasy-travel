@@ -1,5 +1,5 @@
 /**
- * Fantasy Travel: opening screen (page loader).
+ * Fantasy Travel: opening screen.
  *
  * scripts/page-loader.js adds `.is-loading` to <html> before first paint and removes it
  * after 3 seconds. Every rule here is scoped to that class, so with JavaScript disabled

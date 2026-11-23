@@ -139,14 +139,12 @@ body {
   font-size: clamp(40px, 8vw, 80px);
   line-height: 1.2;
   text-align: center;
-  text-transform: capitalize;
 }
 
 .hero-section__sub-heading {
   margin: clamp(15px, 2vw, 20px) 0;
   font-size: clamp(16px, 2vw, 20px);
   text-align: center;
-  text-transform: capitalize;
 }
 
 .hero-section__scroll-link {
@@ -238,7 +236,6 @@ body {
   font-size: clamp(35px, 4vw, 50px);
   font-weight: var(--font-weight-regular);
   text-align: center;
-  text-transform: capitalize;
 }
 
 .section-description {
@@ -335,7 +332,7 @@ body {
   top: 2px;
   width: 15px;
   height: 15px;
-  background: url("../assets/images/pin.webp") center / contain no-repeat;
+  background: url("../assets/icons/pin.webp") center / contain no-repeat;
 }
 
 /* ========== SERVICES ========== */
@@ -409,19 +406,19 @@ body {
 }
 
 .services__circle--world {
-  background-image: url("../assets/images/img5.webp");
+  background-image: url("../assets/images/gallery/overwater-villa.webp");
 }
 
 .services__circle--coins {
-  background-image: url("../assets/images/img2.webp");
+  background-image: url("../assets/images/gallery/lake-island.webp");
 }
 
 .services__circle--culture {
-  background-image: url("../assets/images/img6.webp");
+  background-image: url("../assets/images/gallery/beach-dinner.webp");
 }
 
 .services__circle--adventure {
-  background-image: url("../assets/images/img4.webp");
+  background-image: url("../assets/images/gallery/old-town-street.webp");
 }
 
 .services__card:hover .services__circle {
@@ -597,7 +594,6 @@ body {
   color: var(--color-text);
   font-size: clamp(12px, 1.5vw, 14px);
   text-align: center;
-  text-transform: capitalize;
 }
 
 .footer__copyright a:hover {

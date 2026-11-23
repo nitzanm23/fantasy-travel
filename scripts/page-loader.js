@@ -1,5 +1,5 @@
 /**
- * Fantasy Travel: opening screen timing.
+ * Fantasy Travel: opening screen.
  *
  * Loaded in <head> without `defer`, so `.is-loading` is set before the first paint and the
  * page never flashes. With JavaScript disabled the class is never added and the page shows
