@@ -1,6 +1,6 @@
 # CI/CD for Fantasy Travel
 #
-# On every push to main:  validate  ->  deploy to GitHub Pages (only if validation passed)
+# On every push to main:  validate  ->  package the site  ->  deploy to GitHub Pages
 # On every pull request:  validate only (nothing is published)
 #
 # One-time setup in the repository: Settings -> Pages -> Source: "GitHub Actions".
@@ -14,10 +14,11 @@ on:
     branches: [main]
   workflow_dispatch: # adds a "Run workflow" button in the Actions tab
 
-# If a newer push arrives while a run is still going, cancel the older run.
+# A newer push to a pull request cancels its older check. Runs on main are never cancelled, so a
+# deployment that has started always finishes (GitHub's recommendation for Pages).
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -48,17 +49,14 @@ jobs:
       - name: Run Lighthouse CI
         run: npx --yes @lhci/cli@0.16.1 autorun --config=.github/lighthouserc.json
 
-  deploy:
-    name: Deploy to GitHub Pages
+  package:
+    name: Package site
     needs: validate # runs only if every validate step passed
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
-      pages: write # publish to GitHub Pages
-      id-token: write # prove to Pages that this run comes from this repository
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      contents: read # check out the code
+      pages: read # let configure-pages read the Pages settings
     steps:
       - name: Check out the code
         uses: actions/checkout@v7
@@ -78,6 +76,23 @@ jobs:
         with:
           path: _site
 
+  # Deploying in its own job means a failed deploy can be re-run on its own: the uploaded site is
+  # reused instead of being uploaded a second time.
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write # publish to GitHub Pages
+      id-token: write # prove to Pages that this run comes from this repository
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # One deployment at a time; a deployment that has started is never cancelled.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
