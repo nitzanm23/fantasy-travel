@@ -57,6 +57,7 @@ The visual base follows the Modern Web tutorial credited below. I extended it wi
 - **Progressive enhancement:** JavaScript-dependent styles apply only once a script has added its class (`has-js`, `is-loading`, `aos-enabled`). With scripts disabled, the menu renders as a plain link row and all content is visible.
 - **Motion preferences:** `prefers-reduced-motion` stops the slideshow and AOS. The loader's CSS failsafe timers are exempt, because they are timers rather than motion.
 - **Design tokens:** Colors, spacing, motion, and z-index layers live in `tokens.css` as custom properties; components use BEM naming.
+- **Right-sized images:** Every destination and gallery photo also ships as a 640px version, and `srcset`/`sizes` let the browser pick it whenever a card is small (desktop grids, most phones). With the photos re-encoded and a lighter favicon, Lighthouse's mobile test now loads 1.4 MB instead of 3.4 MB.
 - **No third-party requests:** AOS and fonts are self-hosted, and the five icons ship as an inline SVG sprite instead of a full icon font.
 
 ---
@@ -81,8 +82,8 @@ fantasy-travel/
 ├── assets/
 │   ├── icons/            # favicon, home screen icons, UI icons
 │   ├── images/
-│   │   ├── destinations/ # destination photos
-│   │   ├── gallery/      # slideshow and gallery photos
+│   │   ├── destinations/ # destination photos, full size and 640px
+│   │   ├── gallery/      # slideshow and gallery photos, full size and 640px
 │   │   ├── book.webp     # booking illustration
 │   │   └── og-image.jpg  # social preview image
 │   └── logos/
@@ -146,7 +147,6 @@ Checked in Chrome at five widths (360–1440px), including keyboard-only navigat
 
 ## 🔭 Possible Improvements
 
-- Serve responsive image sizes (`srcset`) so phones download smaller photos.
 - Use landscape-cropped hero images; the current portrait photos are cropped on wide screens.
 - Test on Safari/iOS and Firefox, and with a screen reader.
 
